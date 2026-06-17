@@ -7,46 +7,132 @@ Give it a syllabus (PDF, DOCX, URL), get back a comprehensive breakdown. Works o
 > Works with university syllabi worldwide — covers all major grading systems, term structures, and policy conventions.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Platforms](https://img.shields.io/badge/platform-Universal-purple)](#supported-platforms)
+[![Platforms](https://img.shields.io/badge/platform-Universal-purple)](#installation)
 
 ---
 
-## Quick Start
+## Installation
 
-### Any AI Tool — Paste the Prompt
+### One-Line Install (Recommended)
 
-The fastest way: copy `prompt.md` or `SKILL.md` into your AI tool, then provide a syllabus.
-
+**Bash / Git Bash:**
+```bash
+curl -fsSL https://raw.githubusercontent.com/JeromeWang6066/syllabus-reader-skill/main/install.sh | bash -s -- <platform>
 ```
-Copy → Paste into Claude Code / Codex / Cursor / ChatGPT → Done
+
+**PowerShell:**
+```powershell
+irm https://raw.githubusercontent.com/JeromeWang6066/syllabus-reader-skill/main/install.ps1 | iex; .\install.ps1 -Platform <platform>
 ```
 
-Or paste this directly:
+Replace `<platform>` with one of:
+- **workbuddy**     → `~/.workbuddy/skills/`  (git clone, auto-loads)
+- **claude-code**   → `~/.claude/rules/`       (global rule, all projects)
+- **codex**         → `~/.agents/skills/`      (git clone, native skill support)
+- **copilot**       → `~/.copilot/instructions/` (user-level, all workspaces)
+- **windsurf**      → `~/global_rules.md`       (appends to global rules)
+- **cursor**        → `~/.cursor/rules/`        (global user rule)
 
-````
-You are a syllabus analysis assistant. Parse the provided syllabus and extract six categories: (1) Basic Info, (2) Schedule, (3) Teaching Content, (4) Grading, (5) Other Notes, (6) Risk Flags. For Risk Flags, proactively scan for: attendance fail triggers, grade threshold traps, workload collision weeks, hidden costs, late work penalties, syllabus quiz requirements, group work risks, ungraded-but-required components, strict prerequisites. Use [CRITICAL] / [HIGH] / [MEDIUM] severity tags. Default output in Chinese; switch to English if I speak English. Never translate course names, book titles, person names, or university names.
-````
-
-### WorkBuddy — One-Click Install
+### Clone & Run Locally
 
 ```bash
-git clone https://github.com/JeromeWang6066/syllabus-reader-skill.git ~/.workbuddy/skills/syllabus-reader
+git clone https://github.com/JeromeWang6066/syllabus-reader-skill.git
+cd syllabus-reader-skill
+
+# Bash:
+./install.sh <platform>
+
+# PowerShell:
+.\install.ps1 -Platform <platform>
+
+# Or install everywhere at once:
+./install.sh --all          # Bash
+.\install.ps1 -All          # PowerShell
 ```
 
-Restart WorkBuddy, then try: **"帮我解读这份 syllabus"**
+### Uninstall
+
+```bash
+./install.sh --uninstall <platform>
+.\install.ps1 -Uninstall <platform>
+```
+
+---
+
+## Supported Platforms
+
+Each platform has its own native config directory for global rules/instructions. The installer places the prompt there so it works across all projects automatically — no copying or pasting needed after initial setup.
+
+| Platform | Config Directory | Method | Scope |
+|----------|------------------|--------|-------|
+| **[WorkBuddy](#workbuddy)** | `~/.workbuddy/skills/` | `git clone` into skills directory | All sessions, auto-loads |
+| **[OpenAI Codex CLI](#openai-codex-cli)** | `~/.agents/skills/` | `git clone` into skills directory | All sessions, `/skills` to invoke |
+| **[Claude Code](#claude-code)** | `~/.claude/rules/` | Global rule file (`*.md`) | All projects, auto-discovers |
+| **[GitHub Copilot Chat](#github-copilot-chat)** | `~/.copilot/instructions/` | User-level instruction (`*.instructions.md`) | All VS Code workspaces, auto-discovers |
+| **[Windsurf](#windsurf)** | `~/global_rules.md` | Append to single global rules file | All projects, requires restart |
+| **[Cursor](#cursor)** | `~/.cursor/rules/` | User rule file (`*.mdc`) | Global, reference via `@` in chat |
+
+> **Note:** For platforms without a file-based global config (**ChatGPT**, **Claude web**, **Gemini**), copy [`prompt.md`](prompt.md) and paste it as your system prompt or custom instructions.
+
+### WorkBuddy
+
+```bash
+./install.sh workbuddy
+# → git clones to ~/.workbuddy/skills/syllabus-reader
+# → Restart WorkBuddy → ready to use
+```
+
+The SKILL.md YAML metadata is read automatically. No extra configuration needed.
+
+### OpenAI Codex CLI
+
+```bash
+./install.sh codex
+# → git clones to ~/.agents/skills/syllabus-reader
+# → In Codex session: type /skills to see and activate
+```
+
+Codex natively supports skills in this directory — same format as WorkBuddy's SKILL.md (YAML frontmatter + Markdown).
 
 ### Claude Code
 
 ```bash
-# Copy adapter to your project
-cp adapters/claude-code/CLAUDE.md CLAUDE.md
+./install.sh claude-code
+# → writes ~/.claude/rules/syllabus-reader.md (global rule)
+# → Available immediately in ALL projects
 ```
 
-Or paste `SKILL.md` or `prompt.md` into your instruction.
+Claude Code loads `~/.claude/rules/*.md` at the start of every session, across all projects. The rule auto-discovers based on context — when you mention a syllabus, it activates.
 
-### OpenAI Codex / Copilot Chat
+### GitHub Copilot Chat
 
-Copy `adapters/codex/INSTRUCTIONS.md` to your project's `.codex/` directory, or paste `prompt.md` directly.
+```bash
+./install.sh copilot
+# → writes ~/.copilot/instructions/syllabus-reader.instructions.md
+# → Available in every VS Code workspace automatically
+```
+
+Copilot recursively scans `~/.copilot/instructions/` and applies user-level instructions globally. Uses `applyTo: '**'` so it activates on all files.
+
+### Windsurf
+
+```bash
+./install.sh windsurf
+# → appends prompt content to ~/global_rules.md
+# → *** RESTART Windsurf ***
+```
+
+Windsurf reads `~/global_rules.md` on startup. Changes require an application restart. The section is cleanly delimited so uninstallation is non-destructive.
+
+### Cursor
+
+```bash
+./install.sh cursor
+# → writes ~/.cursor/rules/syllabus-reader.mdc (user rule)
+# → Reference @syllabus-reader in chat to invoke
+```
+
+Cursor supports user-level rules via `.cursor/rules/*.mdc`. Set `alwaysApply: false` so it only loads when referenced or when relevant.
 
 ---
 
@@ -92,52 +178,33 @@ Students often skim syllabi and miss critical policies. The prompt performs a de
 
 ---
 
-## Supported Platforms
-
-| Platform | How to Use |
-|----------|------------|
-| **WorkBuddy** | `git clone` to `~/.workbuddy/skills/` → auto-loads |
-| **Claude Code** | Copy `adapters/claude-code/CLAUDE.md` to project root as `CLAUDE.md` |
-| **OpenAI Codex** | Copy `adapters/codex/INSTRUCTIONS.md` to `.codex/` directory |
-| **Cursor** | Paste `SKILL.md` or `prompt.md` into Cursor Rules |
-| **Windsurf** | Paste `SKILL.md` or `prompt.md` as a global/workspace rule |
-| **GitHub Copilot Chat** | Paste `prompt.md` as a custom instruction |
-| **ChatGPT / Claude** | Paste `prompt.md` at the start of conversation |
-| **Any AI tool** | Paste `SKILL.md` or `prompt.md` — universal compatibility |
-
----
-
 ## Repository Structure
 
 ```
 syllabus-reader-skill/
 ├── SKILL.md                                  # Canonical instructions (all platforms)
-├── prompt.md                                 # Condensed universal prompt (all platforms)
+├── prompt.md                                 # Condensed universal prompt
+├── install.sh                                # Universal installer (Bash)
+├── install.ps1                               # Universal installer (PowerShell)
 ├── README.md                                 # This file
 ├── LICENSE                                   # MIT License
 ├── assets/
 │   └── syllabus_summary_template.md          # Output template (Chinese default)
 ├── references/
-│   └── syllabus_patterns.md                  # Pattern library for US & Chinese syllabi
-├── scripts/
-│   └── generate_ics.py                       # Optional: Generate .ics calendar file
-└── adapters/
-    ├── claude-code/
-    │   └── CLAUDE.md                         # Claude Code adapter
-    └── codex/
-        └── INSTRUCTIONS.md                   # OpenAI Codex adapter
+│   └── syllabus_patterns.md                  # Pattern library for worldwide syllabi
+└── scripts/
+    └── generate_ics.py                       # Optional: Generate .ics calendar file
 ```
 
 ### Key Files
 
 | File | Purpose |
 |------|---------|
-| `SKILL.md` | **The canonical instruction set.** The YAML at top is for WorkBuddy metadata; all other AI tools can read it by starting from `# Syllabus Reader`. Contains the most complete and detailed version. If in doubt, use `SKILL.md` — it works everywhere. |
-| `prompt.md` | **Condensed universal prompt.** Paste into any AI tool for quick syllabus analysis. Self-contained, platform-agnostic. |
-| `references/syllabus_patterns.md` | Comprehensive library of section headers, grading patterns, terminology, and risk indicators covering major university systems worldwide. |
-| `assets/syllabus_summary_template.md` | Structured Markdown output template. The standard format for results regardless of platform. |
-| `scripts/generate_ics.py` | Standalone Python utility. Feed a JSON array of events → `.ics` file for Apple Calendar / Outlook / Google Calendar. |
-| `adapters/` | Platform-specific adapter files (Claude Code, Codex, etc.). |
+| [`SKILL.md`](SKILL.md) | **The canonical instruction set.** Works on every platform — ignore the YAML frontmatter if not using WorkBuddy. Contains the most complete version with detailed risk categories, regional adaptation logic, and output formatting rules. |
+| [`prompt.md`](prompt.md) | **Condensed universal prompt.** Self-contained, platform-agnostic. Paste into any AI tool that doesn't have a config directory. |
+| [`references/syllabus_patterns.md`](references/syllabus_patterns.md) | Comprehensive library of section headers, grading patterns, terminology, and risk indicators covering major university systems worldwide. |
+| [`assets/syllabus_summary_template.md`](assets/syllabus_summary_template.md) | Structured Markdown output template. The standard format for results regardless of platform. |
+| [`scripts/generate_ics.py`](scripts/generate_ics.py) | Standalone Python utility. Feed a JSON array of events → `.ics` file for Apple Calendar / Outlook / Google Calendar. |
 
 ---
 
