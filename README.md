@@ -274,4 +274,4 @@ MIT — see [LICENSE](LICENSE).
 
 ## Acknowledgments
 
-Built from real-world syllabus analysis across US and Chinese universities. The risk flagging system was developed by analyzing hundreds of syllabi to identify the patterns that most frequently catch students off guard.
+Built from real-world syllabus analysis across university systems worldwide. The risk flagging system was developed by analyzing syllabi from multiple countries and grading schemes to identify the patterns that most frequently catch students off guard.

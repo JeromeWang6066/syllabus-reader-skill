@@ -26,7 +26,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PLATFORMS="workbuddy claude-code codex copilot windsurf cursor"
 
 usage() {
-    echo "Usage: $0 [platform] [--all] [--list] [--uninstall]"
+    echo "Usage: $0 [platform] [--all | -all] [--list | -list] [--uninstall | -uninstall]"
     echo ""
     echo "Platforms:"
     echo "  workbuddy     Install to ~/.workbuddy/skills/          (git clone)"
@@ -36,10 +36,10 @@ usage() {
     echo "  windsurf      Append prompt to ~/global_rules.md"
     echo "  cursor        Install to ~/.cursor/rules/                 (user-level)"
     echo ""
-    echo "Flags:"
-    echo "  --all           Install on all platforms"
-    echo "  --list          List supported platforms"
-    echo "  --uninstall     Remove from specified platform"
+    echo "Flags (both -- and - forms accepted):"
+    echo "  --all / -all       Install on all platforms"
+    echo "  --list / -list     List supported platforms"
+    echo "  --uninstall / -uninstall <platform>   Remove from specified platform"
 }
 
 list_platforms() {
@@ -83,11 +83,11 @@ description: Syllabus Reader — parse and analyze university course syllabi wit
 
 HEADER
 
-    # Append SKILL.md content (skip YAML frontmatter)
-    sed -n '/^---$/,$ p' "$SCRIPT_DIR/SKILL.md" | tail -n +2 >> "$target"
+    # Append SKILL.md content (skip YAML frontmatter: everything after the second --- line)
+    awk 'BEGIN{skip=1} /^---$/{skip--; next} skip<=0' "$SCRIPT_DIR/SKILL.md" >> "$target"
 
     echo "[Claude Code] ✅ Installed global rule to $target"
-    echo "  Available in all projects. Type /skills or mention 'syllabus' to trigger."
+    echo "  Available in all projects automatically — mention 'syllabus' to engage."
 }
 
 uninstall_claude_code() {
@@ -169,9 +169,9 @@ install_windsurf() {
 uninstall_windsurf() {
     local target="$HOME/global_rules.md"
     if [ -f "$target" ]; then
-        # Remove the section between markers (non-destructive, keeps other content)
+        # Remove the Syllabus Reader section: from its heading to the line before
+        # the next heading (or EOF). Keeps all other content intact.
         python3 -c "
-import sys
 lines = open('$target').readlines()
 skip = False
 output = []
@@ -180,16 +180,13 @@ for line in lines:
         skip = True
         continue
     if skip:
-        if line.strip() == '---':
-            continue
-        if not skip:
-            output.append(line)
-        # Keep reading until we find end marker or next top-level heading starting with #
-        if skip and line.startswith('# ') and 'Syllabus Reader' not in line:
-            output.append(line)
+        # Stop skipping at the next heading (any level: #, ##, ###, etc.)
+        if line.startswith('#') and 'Syllabus Reader' not in line:
             skip = False
-        elif not skip:
             output.append(line)
+        # Otherwise: still inside Syllabus Reader section, drop this line
+    else:
+        output.append(line)
 open('$target','w').writelines(output)
 " 2>/dev/null || echo "  Manual cleanup may be needed: edit ~/global_rules.md and remove the '# Syllabus Reader' section"
     fi
@@ -257,8 +254,8 @@ do_uninstall() {
 # --- Main ---
 case "${1:-}" in
     --help|-h) usage ;;
-    --list)   list_platforms ;;
-    --all)
+    --list|-list)   list_platforms ;;
+    --all|-all)
         for p in $PLATFORMS; do
             echo ""
             do_install "$p"
@@ -266,7 +263,7 @@ case "${1:-}" in
         echo ""
         echo "All done! 🎉"
         ;;
-    --uninstall)
+    --uninstall|-uninstall)
         shift
         if [ -z "${1:-}" ]; then
             echo "Usage: $0 --uninstall <platform>"

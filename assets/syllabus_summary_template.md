@@ -1,10 +1,9 @@
 # [Course Name] — 课程大纲解读
 
-<!-- LANGUAGE RULE: Default output language is Chinese for all section headers, labels,
-     descriptions, and action items. Exceptions (never translate): course names, book
-     titles, personal names, university names, standard technical terms, and direct
-     policy quotes. If the user's conversation is in English, output entirely in
-     English instead. Match the user's conversation language. -->
+<!-- This template uses Chinese headers by default. If the user's conversation is in
+     English, translate all headers and labels to English. For the full output language
+     rules (what to keep in original language, etc.), see SKILL.md → Step 3:
+     "Output Language Rule". -->
 
 > **快速概览**
 > - 课程代码：`[Course Code]`

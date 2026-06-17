@@ -236,7 +236,7 @@ Guidelines for the output:
 - Use the exact course name and code from the syllabus
 - Present dates in a clean, consistent format
 - Display grading as a clear breakdown with percentages
-- Flag items as `[未提及]` (or `[Not specified]` if outputting in English) when information is not found in the syllabus
+- Flag items as `[未提及]` (or `[Not specified]` if outputting in English) when information is not found in the syllabus; use `[部分信息]` (EN: `[Partial]`) when information exists but is incomplete — see "Handling Incomplete Syllabi" below for the distinction
 - Add a brief "Quick Look" summary box at the top with the most critical info
 - For risk items, use severity tags matching the output language: [致命] / [高危] / [注意] in Chinese, [CRITICAL] / [HIGH] / [MEDIUM] in English
 - Cite the specific passage or section for each flagged risk
@@ -251,8 +251,15 @@ with actionable suggestions:
 
 ## Handling Incomplete Syllabi
 
-When certain information is missing from the syllabus:
-1. Mark the section with `[部分信息]` or `[未提及]` (English: `[Partial]` / `[Not specified]`)
+When information is not fully present in the syllabus, use two distinct markers:
+
+- **`[未提及]`** (EN: `[Not specified]`): The information is **completely absent**
+  from the syllabus. No mention, no hint. Example: no grading breakdown at all.
+- **`[部分信息]`** (EN: `[Partial]`): Some information is present but **incomplete**.
+  Example: a reading list mentions "Chapters 1-5" without specifying the textbook.
+
+For each marked item:
+1. Apply the correct marker immediately after the field label
 2. Note what information is missing
 3. Suggest where the user might find this information (e.g., "Check the department website"
    or "Usually announced in the first class")
@@ -291,26 +298,6 @@ strategies based on the syllabus language and format, not on assumed region.
 - Recognize named holidays in any language from the schedule
 - Flag weeks immediately before/after any break as potential high-stress periods
 - Note add/drop and withdrawal deadlines regardless of the naming convention used
-
-## Output Language Rule
-
-**Default output language is Chinese.** All section headers, field labels, descriptive
-text, risk narratives, and action items should be in Chinese.
-
-**Exceptions — always keep in original language, never translate:**
-- Course names (e.g. "Design and Analysis of Algorithms")
-- Course codes (e.g. "COMPSCI 308")
-- Book titles (e.g. "Introduction to Algorithms")
-- Personal names (e.g. "Mustafa MISIR")
-- University names (e.g. "Duke Kunshan University")  
-- Standard technical terms (e.g. "Divide and Conquer", "Dynamic Programming", "NP-Completeness")
-- Direct quotations from the syllabus (preserve original wording when citing policies)
-
-**Language matching rule:**
-- If the user's conversation is in English → output entirely in English
-- If the user's conversation is in Chinese → output in Chinese (default)
-- The user's conversation language always overrides the default
-- When in doubt about the user's preferred language, default to Chinese
 
 ## Resources
 

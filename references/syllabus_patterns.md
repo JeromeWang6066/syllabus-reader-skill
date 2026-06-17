@@ -1,8 +1,8 @@
 # Syllabus Section Patterns & Terminology
 
 This reference covers common syllabus structures across university systems worldwide.
-The examples draw primarily from US and Chinese syllabi (the two largest systems), but
-the patterns — section headers, grading terminology, risk indicators — are universal.
+The examples are drawn from major university systems and represent universal patterns
+found across regions — section headers, grading terminology, and risk indicators.
 Use this reference as a guide, not a rulebook: every university has its own conventions.
 When you encounter an unfamiliar format, look for the underlying structure rather than
 expecting an exact keyword match.

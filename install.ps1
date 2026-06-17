@@ -59,16 +59,17 @@ function Show-Platforms {
 }
 
 # --- Helper: Get SKILL.md content without YAML frontmatter ---
+# Strips only the first two --- delimited lines and everything between them.
 function Get-SkillContent {
     $lines = Get-Content "$ScriptDir\SKILL.md" -Encoding UTF8
-    $skipYaml = $false
-    $yamlEnds = 0
+    $yamlDelimiterCount = 0
     foreach ($line in $lines) {
         if ($line -match '^---$') {
-            $yamlEnds++
-            if ($yamlEnds -ge 2) { $skipYaml = $true; continue }
+            $yamlDelimiterCount++
+            if ($yamlDelimiterCount -ge 2) { continue }
+            else { continue }
         }
-        if ($skipYaml) { $line }
+        if ($yamlDelimiterCount -ge 2) { $line }
     }
 }
 
@@ -114,7 +115,7 @@ description: Syllabus Reader — parse and analyze university course syllabi wit
     Set-Content -Path $target -Value ($header + $skillContent) -Encoding UTF8
 
     "[Claude Code] Installed global rule to $target"
-    "  Available in all projects. Mention 'syllabus' to trigger."
+    "  Available in all projects automatically - mention 'syllabus' to engage."
 }
 
 function Uninstall-ClaudeCode {
@@ -191,7 +192,8 @@ function Install-Windsurf {
 function Uninstall-Windsurf {
     $target = Join-Path $env:USERPROFILE "global_rules.md"
     if (Test-Path $target) {
-        # Simple approach: remove the section
+        # Remove the Syllabus Reader section: from its heading to the line before
+        # the next heading (or EOF). Keeps all other content intact.
         $lines = Get-Content $target -Encoding UTF8
         $output = @()
         $skipping = $false
@@ -199,10 +201,14 @@ function Uninstall-Windsurf {
             if ($line -match '# Syllabus Reader \(installed via syllabus-reader-skill\)') {
                 $skipping = $true; continue
             }
-            if (-not $skipping) { $output += $line }
-            elseif ($line -match '^# ' -and $line -notmatch 'Syllabus Reader') {
+            if (-not $skipping) {
+                $output += $line
+            }
+            elseif ($line -match '^#+' -and $line -notmatch 'Syllabus Reader') {
+                # Next heading (any level) → stop skipping, include this line
                 $skipping = $false; $output += $line
             }
+            # else: still inside Syllabus Reader section → drop this line
         }
         Set-Content -Path $target -Value $output -Encoding UTF8
     }

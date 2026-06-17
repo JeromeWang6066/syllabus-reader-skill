@@ -39,6 +39,7 @@ Example JSON:
 
 import json
 import sys
+import uuid
 import argparse
 from datetime import datetime, timedelta
 from textwrap import dedent
@@ -73,8 +74,10 @@ def fold_line(line: str) -> str:
 
 TIMEZONE = "Asia/Shanghai"
 
-# VTIMEZONE definition for Asia/Shanghai (China Standard Time, UTC+8, no DST)
-VTIMEZONE_CST = dedent("""\
+# VTIMEZONE definitions for explicitly supported timezones.
+# ICS clients can infer other timezones, so unknown ones are omitted.
+VTIMEZONE_BLOCKS = {
+    "Asia/Shanghai": dedent("""\
 BEGIN:VTIMEZONE
 TZID:Asia/Shanghai
 BEGIN:STANDARD
@@ -83,7 +86,13 @@ TZOFFSETFROM:+0800
 TZOFFSETTO:+0800
 TZNAME:CST
 END:STANDARD
-END:VTIMEZONE""")
+END:VTIMEZONE"""),
+}
+
+
+def get_vtimezone(timezone: str) -> str:
+    """Return a VTIMEZONE block for *timezone*, or an empty string if unknown."""
+    return VTIMEZONE_BLOCKS.get(timezone, "")
 
 
 def format_dt_local(dt_str: str) -> str:
@@ -112,9 +121,12 @@ def generate_ics(events, timezone=TIMEZONE, prodid="-//WorkBuddy//Syllabus Reade
         "X-WR-CALNAME:Course Schedule",
     ]
 
-    # Include VTIMEZONE for proper timezone handling in Outlook/Apple Calendar
-    for l in VTIMEZONE_CST.strip().split('\n'):
-        lines.append(l)
+    # Include VTIMEZONE for proper timezone handling in Outlook/Apple Calendar.
+    # Omitted for unknown timezones (clients will infer from TZID).
+    vtz = get_vtimezone(timezone)
+    if vtz:
+        for line in vtz.strip().split('\n'):
+            lines.append(line)
 
     for i, ev in enumerate(events):
         summary = ev.get("summary", "Untitled Event")
@@ -122,7 +134,7 @@ def generate_ics(events, timezone=TIMEZONE, prodid="-//WorkBuddy//Syllabus Reade
         all_day = ev.get("all_day", False)
 
         lines.append("BEGIN:VEVENT")
-        lines.append(f"UID:workbuddy-syllabus-{i}-{int(datetime.now().timestamp())}")
+        lines.append(f"UID:workbuddy-syllabus-{uuid.uuid4().hex[:12]}")
 
         if all_day:
             start_date = format_date(start)

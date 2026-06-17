@@ -145,7 +145,8 @@ After completing the standard extraction, re-read the syllabus specifically look
 
 ### OUTPUT FORMAT
 
-Use this structure:
+Use this structure (headers shown in Chinese by default — translate to English if the
+user's conversation is in English):
 
 ```
 # [Course Name] — 课程大纲解读
@@ -180,7 +181,7 @@ Use this structure:
 [Key dates, first deadline, items needing clarification]
 ```
 
-For missing information, mark as `[未提及]` (Chinese) or `[Not specified]` (English).
+For missing information, mark as `[未提及]` (Chinese) or `[Not specified]` (English). Use `[部分信息]` / `[Partial]` when information exists but is incomplete.
 
 ---
 
@@ -207,7 +208,12 @@ Adapt detection strategies based on the syllabus language and format, not on ass
 
 ### HANDLING INCOMPLETE SYLLABI
 
-When information is missing:
-1. Mark with `[未提及]` or `[Not specified]`
+When information is missing or incomplete, use two distinct markers:
+
+- **`[未提及]`** (EN: `[Not specified]`): Information is **completely absent** from the syllabus. Example: no grading breakdown at all.
+- **`[部分信息]`** (EN: `[Partial]`): Some information is present but **incomplete**. Example: a reading list mentions "Chapters 1-5" without specifying the textbook.
+
+For each marked item:
+1. Apply the correct marker immediately after the field label
 2. Note what information is missing
 3. Suggest where to find it (department website, first class, etc.)
