@@ -4,6 +4,15 @@ description: "This skill should be used when the user wants to interpret, parse,
 agent_created: true
 ---
 
+<!-- 
+Platform compatibility:
+- WorkBuddy: Reads the YAML above for skill metadata. Ignores this comment.
+- All other AI tools (Claude Code, Codex, Cursor, ChatGPT, etc.): 
+  Ignore the YAML block above. Start reading from "# Syllabus Reader" below.
+  This file is the canonical instruction set — reference it directly or paste
+  its content into your AI tool's system prompt / rules / custom instructions.
+-->
+
 # Syllabus Reader
 
 ## Overview
@@ -16,9 +25,9 @@ workload collision periods, and grade thresholds that can unexpectedly fail a st
 Optimized primarily for US university syllabi, with full support for Chinese university
 formats as a secondary target.
 
-## When to Use This Skill
+## When to Engage
 
-Trigger this skill when the user:
+Engage when the user:
 - Uploads a syllabus file (PDF, DOCX) or provides a syllabus URL
 - Asks to "interpret", "parse", "summarize", "analyze" a syllabus
 - Uses keywords like: syllabus, 教学大纲, 课程大纲, course outline, 课程安排
@@ -307,20 +316,23 @@ text, risk narratives, and action items should be in Chinese.
 ## Resources
 
 ### scripts/generate_ics.py
-Optional utility script that converts a JSON array of course events into an ICS calendar
-file. Not part of the standard workflow — available for manual use if the user explicitly
-requests calendar generation. Run with `python scripts/generate_ics.py -i <events.json> -o <output.ics>`.
+Optional utility: converts a JSON array of course events into an ICS calendar file
+(importable by Apple Calendar, Outlook, Google Calendar). Not part of the standard
+workflow — only run if the user explicitly requests a calendar file.
+Usage: `python scripts/generate_ics.py -i <events.json> -o <output.ics> [-t <timezone>]`
+Works on any platform with Python 3 — generates an `.ics` file on disk.
 
 ### references/syllabus_patterns.md
-Comprehensive list of common section header patterns, grading structures,
-terminology, and critical risk indicators used in US and Chinese university syllabi.
-Load this reference when encountering unfamiliar syllabus formats, when struggling
-to identify section boundaries, or when performing the risk scan pass. The reference
-includes dedicated sections on attendance fail triggers, grade threshold traps,
-prerequisite enforcement patterns, workload collision detection, and other
-hidden pitfalls by region.
+Comprehensive reference library of section header patterns, grading structures,
+terminology, and critical risk indicators for US and Chinese university syllabi.
+Use this reference when:
+- Encountering an unfamiliar syllabus format or section naming convention
+- Having trouble identifying section boundaries
+- Performing the risk scan pass — check patterns against the syllabus text
+- Need examples of what a specific risk looks like in each region
+The reference includes dedicated sections on all nine risk categories by region.
 
 ### assets/syllabus_summary_template.md
-Markdown template for the structured output summary. Use this as the base skeleton
-and fill in extracted information. Do not load into context — read and use as a
-structural guide for formatting the output.
+Markdown template for the structured output. Use as the base skeleton — populate
+each section with extracted information. Read it once to understand the format,
+then write the output following the same structure.

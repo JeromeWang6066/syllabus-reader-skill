@@ -1,17 +1,59 @@
-# Syllabus Reader — WorkBuddy Skill
+# Syllabus Reader
 
-A WorkBuddy Skill that parses university course syllabi and extracts structured information with proactive risk flagging. Upload a PDF, DOCX, or provide a URL — the skill reads the syllabus and produces a clean, comprehensive summary that highlights hidden pitfalls students often miss.
+Parse university course syllabi and extract structured information with **proactive risk flagging** — hidden pitfalls, grade traps, attendance triggers, and workload collisions that students easily overlook.
+
+Give it a syllabus (PDF, DOCX, URL), get back a comprehensive breakdown. Works on **WorkBuddy, Claude Code, Codex, Cursor, Windsurf, Copilot Chat** — any AI coding tool.
 
 > Optimized for **US university syllabi** with full **Chinese university** support.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![WorkBuddy Skill](https://img.shields.io/badge/WorkBuddy-Skill-blue)](https://www.codebuddy.cn/docs/workbuddy/Overview)
+[![Platforms](https://img.shields.io/badge/platform-Universal-purple)](#supported-platforms)
+
+---
+
+## Quick Start
+
+### Any AI Tool — Paste the Prompt
+
+The fastest way: copy `prompt.md` or `SKILL.md` into your AI tool, then provide a syllabus.
+
+```
+Copy → Paste into Claude Code / Codex / Cursor / ChatGPT → Done
+```
+
+Or paste this directly:
+
+````
+You are a syllabus analysis assistant. Parse the provided syllabus and extract six categories: (1) Basic Info, (2) Schedule, (3) Teaching Content, (4) Grading, (5) Other Notes, (6) Risk Flags. For Risk Flags, proactively scan for: attendance fail triggers, grade threshold traps, workload collision weeks, hidden costs, late work penalties, syllabus quiz requirements, group work risks, ungraded-but-required components, strict prerequisites. Use [CRITICAL] / [HIGH] / [MEDIUM] severity tags. Default output in Chinese; switch to English if I speak English. Never translate course names, book titles, person names, or university names.
+````
+
+### WorkBuddy — One-Click Install
+
+```bash
+git clone https://github.com/JeromeWang6066/syllabus-reader-skill.git ~/.workbuddy/skills/syllabus-reader
+```
+
+Restart WorkBuddy, then try: **"帮我解读这份 syllabus"**
+
+### Claude Code
+
+```bash
+# Copy adapter to your project
+cp adapters/claude-code/CLAUDE.md CLAUDE.md
+```
+
+Or paste `SKILL.md` or `prompt.md` into your instruction.
+
+### OpenAI Codex / Copilot Chat
+
+Copy `adapters/codex/INSTRUCTIONS.md` to your project's `.codex/` directory, or paste `prompt.md` directly.
 
 ---
 
 ## Features
 
 ### Six Extraction Categories
+
 | Category | What It Covers |
 |----------|----------------|
 | **Basic Info** | Course name, code, instructor, contact, credits, prerequisites, semester |
@@ -19,11 +61,11 @@ A WorkBuddy Skill that parses university course syllabi and extracts structured 
 | **Teaching Content** | Course description, learning objectives, textbooks, weekly topic breakdown |
 | **Grading** | Component weights, grading scale, late policies, extra credit |
 | **Other Notes** | Attendance policy, academic integrity, device policy, communication rules |
-| **Risk Flags** | Proactive scanning for hidden risks and pitfalls (see below) |
+| **Risk Flags** | Proactive scanning for hidden risks and pitfalls (the key differentiator) |
 
-### Proactive Risk Flagging — The Key Differentiator
+### Proactive Risk Flagging
 
-Students often skim syllabi and miss critical policies. This skill performs a dedicated risk scan pass to catch:
+Students often skim syllabi and miss critical policies. The prompt performs a dedicated risk scan pass to catch:
 
 | Severity | What It Flags |
 |----------|---------------|
@@ -31,103 +73,101 @@ Students often skim syllabi and miss critical policies. This skill performs a de
 | **[HIGH]** | Double-pass rules, minimum final exam thresholds, workload collision weeks |
 | **[MEDIUM]** | Hidden costs (iClickers, access codes), syllabus quizzes, group work risks |
 
-**Specific risks scanned for:**
-- **Attendance Fail Triggers** — "3 absences = automatic F" rules
-- **Grade Threshold Traps** — "Must pass final to pass course" or "Must score ≥40% on each component"
-- **Workload Collision Detection** — weeks where exam + project + problem set all converge
-- **Late Work Traps** — zero-tolerance late policies, aggressive hourly deductions
-- **Hidden Costs** — mandatory access codes, iClickers, custom-edition textbooks
-- **Syllabus Quiz Requirements** — mandatory quizzes you must complete to stay enrolled
-- **Group Work Risks** — peer evaluations that can tank your grade
-- **Ungraded-But-Required** — items listed as mandatory but receiving no grade weight
-- **Strict Prerequisites** — enforced prerequisites vs. advisory "recommended background"
+**Nine risk categories scanned for:**
+- **Attendance Fail Triggers** — "3 absences = automatic F"
+- **Grade Threshold Traps** — "Must pass final to pass course"
+- **Workload Collision Detection** — weeks where exam + project + problem set converge
+- **Late Work Traps** — zero-tolerance policies, aggressive hourly deductions
+- **Hidden Costs** — mandatory access codes, iClickers, custom editions
+- **Syllabus Quiz Requirements** — must pass to stay enrolled
+- **Group Work Risks** — peer evaluations that sink your grade
+- **Ungraded-But-Required** — mandatory items with no grade weight
+- **Strict Prerequisites** — enforced vs. advisory "recommended background"
+
+### Regional University Support
+
+| Region | Target | Key Features |
+|--------|--------|--------------|
+| **US** (primary) | 15-week semesters, Canvas/Blackboard, iClickers, Honor Codes, A-F grading | Attendance thresholds, access codes, Thanksgiving crunch weeks |
+| **China** (secondary) | 16-18 week semesters, 超星/智慧树, 平时+期末 split, 百分制/五级制 | 补考/重修 policies, 考勤 weighted grading, 课程群 |
+
+### Output Language
+
+- **Default**: Chinese (Simplified)
+- **If you chat in English**: Output switches to English
+- **Never translated**: course names, book titles, personal names, university names, direct quotations
 
 ---
 
-## Installation
+## Supported Platforms
 
-### Prerequisites
-- [WorkBuddy](https://www.codebuddy.cn/) installed on your machine
+| Platform | How to Use |
+|----------|------------|
+| **WorkBuddy** | `git clone` to `~/.workbuddy/skills/` → auto-loads |
+| **Claude Code** | Copy `adapters/claude-code/CLAUDE.md` to project root as `CLAUDE.md` |
+| **OpenAI Codex** | Copy `adapters/codex/INSTRUCTIONS.md` to `.codex/` directory |
+| **Cursor** | Paste `SKILL.md` or `prompt.md` into Cursor Rules |
+| **Windsurf** | Paste `SKILL.md` or `prompt.md` as a global/workspace rule |
+| **GitHub Copilot Chat** | Paste `prompt.md` as a custom instruction |
+| **ChatGPT / Claude** | Paste `prompt.md` at the start of conversation |
+| **Any AI tool** | Paste `SKILL.md` or `prompt.md` — universal compatibility |
 
-### Method 1: Clone to Skills Directory
+---
 
-```bash
-git clone https://github.com/JeromeWang6066/syllabus-reader-skill.git ~/.workbuddy/skills/syllabus-reader
+## Repository Structure
+
+```
+syllabus-reader-skill/
+├── SKILL.md                                  # Canonical instructions (all platforms)
+├── prompt.md                                 # Condensed universal prompt (all platforms)
+├── README.md                                 # This file
+├── LICENSE                                   # MIT License
+├── assets/
+│   └── syllabus_summary_template.md          # Output template (Chinese default)
+├── references/
+│   └── syllabus_patterns.md                  # Pattern library for US & Chinese syllabi
+├── scripts/
+│   └── generate_ics.py                       # Optional: Generate .ics calendar file
+└── adapters/
+    ├── claude-code/
+    │   └── CLAUDE.md                         # Claude Code adapter
+    └── codex/
+        └── INSTRUCTIONS.md                   # OpenAI Codex adapter
 ```
 
-Restart WorkBuddy and the skill will be automatically loaded.
+### Key Files
 
-### Method 2: Manual Download
-
-1. Download and extract the repository ZIP
-2. Move the `syllabus-reader` folder into `~/.workbuddy/skills/`
-3. Restart WorkBuddy
-
-Verify installation by saying **"Help me analyze a syllabus"** in any WorkBuddy conversation — the skill will activate.
+| File | Purpose |
+|------|---------|
+| `SKILL.md` | **The canonical instruction set.** The YAML at top is for WorkBuddy metadata; all other AI tools can read it by starting from `# Syllabus Reader`. Contains the most complete and detailed version. If in doubt, use `SKILL.md` — it works everywhere. |
+| `prompt.md` | **Condensed universal prompt.** Paste into any AI tool for quick syllabus analysis. Self-contained, platform-agnostic. |
+| `references/syllabus_patterns.md` | Comprehensive library of section headers, grading patterns, terminology, and risk indicators for US and Chinese university systems. |
+| `assets/syllabus_summary_template.md` | Structured Markdown output template. The standard format for results regardless of platform. |
+| `scripts/generate_ics.py` | Standalone Python utility. Feed a JSON array of events → `.ics` file for Apple Calendar / Outlook / Google Calendar. |
+| `adapters/` | Platform-specific adapter files (Claude Code, Codex, etc.). |
 
 ---
 
-## Usage
-
-### Trigger Keywords
-
-Any of these phrases will trigger the skill:
-- `syllabus`, `教学大纲`, `课程大纲`, `course outline`, `课程介绍`
-- `analyze this syllabus`, `解读这份大纲`, `parse my syllabus`
-- `帮我整理课程大纲`, `课程安排`, `syllabus summary`
-- `what to watch out for`, `hidden requirements`, `potential pitfalls`
-
-### Examples
+## Usage Examples
 
 **From a URL:**
 ```
 Analyze this syllabus: https://example.com/course-syllabus.html
 ```
 
-**From an uploaded file:**
+**From a file:**
 ```
-Upload a PDF or DOCX file of the syllabus and ask:
+Upload a PDF or DOCX and say:
 "请帮我解读这份教学大纲" or "Parse this syllabus for me"
 ```
 
-**Ask about specific risks:**
+**Targeted questions:**
 ```
 "Are there any attendance fail triggers in this syllabus?"
 "What are the heaviest workload weeks?"
 "Is there a double-pass rule?"
+"What hidden costs should I budget for?"
 ```
-
-### Output Language
-
-- **Default**: Chinese (Simplified) — headers, labels, descriptions, action items
-- **If you chat in English**: Output automatically switches to English
-- **Never translated**: course names, book titles, personal names, university names, direct quotations
-
----
-
-## Skill Structure
-
-```
-syllabus-reader/
-├── SKILL.md                          # Core skill definition and workflow
-├── README.md                         # This file
-├── LICENSE                           # MIT License
-├── assets/
-│   └── syllabus_summary_template.md  # Output template (Chinese default)
-├── references/
-│   └── syllabus_patterns.md          # Pattern library for US & Chinese syllabi
-└── scripts/
-    └── generate_ics.py               # Optional: Generate .ics calendar from events JSON
-```
-
-### Files Explained
-
-| File | Purpose |
-|------|---------|
-| `SKILL.md` | Main skill definition — YAML frontmatter + Markdown. Defines the four-step workflow, six extraction categories, nine risk categories, regional adaptation rules, and output language rules. |
-| `assets/syllabus_summary_template.md` | The structured Markdown template used to format output. Pure Chinese default with inline language rules. |
-| `references/syllabus_patterns.md` | Comprehensive library of syllabus section headers, grading patterns, terminology, and risk indicators for both US and Chinese university systems. Loaded as a reference during parsing. |
-| `scripts/generate_ics.py` | Standalone Python utility. Not part of the standard skill workflow — use manually if you want to convert course events into an `.ics` calendar file importable by Apple Calendar, Outlook, or Google Calendar. |
 
 ---
 
@@ -137,18 +177,8 @@ syllabus-reader/
 # Design and Analysis of Algorithms — 课程大纲解读
 
 > 快速概览
-> - 课程代码：COMPSCI 308
-> - 授课教师：Mustafa MISIR
-> - 学分/学时：4 / 4
-> - 学期：Fall 2026
-> - 风险等级：中
-> - 致命红线：无
-
-## 一、课程基本信息
-| 项目 | 详情 |
-|------|------|
-| 课程名称 | Design and Analysis of Algorithms |
-| ... | ... |
+> - 课程代码：COMPSCI 308  |  学分：4  |  学期：Fall 2026
+> - 风险等级：中  |  致命红线：无
 
 ## 六、特别关注
 ### [高危] 重要提醒
@@ -159,29 +189,29 @@ syllabus-reader/
 ### 任务密集周
 | 周次 | 任务 | 建议 |
 |------|------|------|
-| Week 9 (Oct 19-23) | Midterm Exam + Project Phase 2 Due | 提前一周开始复习和项目收尾 |
+| Week 9 (Oct 19-23) | Midterm Exam + Project Phase 2 Due | 提前一周开始复习和收尾 |
 ```
 
 ---
 
 ## Contributing
 
-Contributions are welcome! If you find a syllabus pattern that isn't detected, or have ideas for new risk categories:
+Contributions welcome! Found a syllabus pattern that doesn't get detected? Have ideas for new risk categories?
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/new-risk-pattern`)
-3. Add your patterns to `references/syllabus_patterns.md`
-4. Update `SKILL.md` if needed
+3. Add patterns to `references/syllabus_patterns.md`
+4. Update `SKILL.md` and `prompt.md` if the detection logic changes
 5. Submit a pull request
 
 ---
 
 ## License
 
-MIT — see [LICENSE](LICENSE) for details.
+MIT — see [LICENSE](LICENSE).
 
 ---
 
 ## Acknowledgments
 
-Built on the [WorkBuddy Skill](https://www.codebuddy.cn/docs/workbuddy/Overview) system. Optimized based on real-world syllabus analysis across US and Chinese universities at all levels (undergraduate and graduate).
+Built from real-world syllabus analysis across US and Chinese universities. The risk flagging system was developed by analyzing hundreds of syllabi to identify the patterns that most frequently catch students off guard.
