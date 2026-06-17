@@ -1,8 +1,11 @@
 # Syllabus Section Patterns & Terminology
 
-This reference covers common syllabus structures across Chinese, US, and other
-university systems. Use it to identify section boundaries and map content to the
-six extraction categories.
+This reference covers common syllabus structures across university systems worldwide.
+The examples draw primarily from US and Chinese syllabi (the two largest systems), but
+the patterns — section headers, grading terminology, risk indicators — are universal.
+Use this reference as a guide, not a rulebook: every university has its own conventions.
+When you encounter an unfamiliar format, look for the underlying structure rather than
+expecting an exact keyword match.
 
 ---
 

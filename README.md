@@ -4,7 +4,7 @@ Parse university course syllabi and extract structured information with **proact
 
 Give it a syllabus (PDF, DOCX, URL), get back a comprehensive breakdown. Works on **WorkBuddy, Claude Code, Codex, Cursor, Windsurf, Copilot Chat** — any AI coding tool.
 
-> Optimized for **US university syllabi** with full **Chinese university** support.
+> Works with university syllabi worldwide — covers all major grading systems, term structures, and policy conventions.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Platforms](https://img.shields.io/badge/platform-Universal-purple)](#supported-platforms)
@@ -84,13 +84,6 @@ Students often skim syllabi and miss critical policies. The prompt performs a de
 - **Ungraded-But-Required** — mandatory items with no grade weight
 - **Strict Prerequisites** — enforced vs. advisory "recommended background"
 
-### Regional University Support
-
-| Region | Target | Key Features |
-|--------|--------|--------------|
-| **US** (primary) | 15-week semesters, Canvas/Blackboard, iClickers, Honor Codes, A-F grading | Attendance thresholds, access codes, Thanksgiving crunch weeks |
-| **China** (secondary) | 16-18 week semesters, 超星/智慧树, 平时+期末 split, 百分制/五级制 | 补考/重修 policies, 考勤 weighted grading, 课程群 |
-
 ### Output Language
 
 - **Default**: Chinese (Simplified)
@@ -141,7 +134,7 @@ syllabus-reader-skill/
 |------|---------|
 | `SKILL.md` | **The canonical instruction set.** The YAML at top is for WorkBuddy metadata; all other AI tools can read it by starting from `# Syllabus Reader`. Contains the most complete and detailed version. If in doubt, use `SKILL.md` — it works everywhere. |
 | `prompt.md` | **Condensed universal prompt.** Paste into any AI tool for quick syllabus analysis. Self-contained, platform-agnostic. |
-| `references/syllabus_patterns.md` | Comprehensive library of section headers, grading patterns, terminology, and risk indicators for US and Chinese university systems. |
+| `references/syllabus_patterns.md` | Comprehensive library of section headers, grading patterns, terminology, and risk indicators covering major university systems worldwide. |
 | `assets/syllabus_summary_template.md` | Structured Markdown output template. The standard format for results regardless of platform. |
 | `scripts/generate_ics.py` | Standalone Python utility. Feed a JSON array of events → `.ics` file for Apple Calendar / Outlook / Google Calendar. |
 | `adapters/` | Platform-specific adapter files (Claude Code, Codex, etc.). |

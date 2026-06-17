@@ -45,4 +45,4 @@ See `../../assets/syllabus_summary_template.md` for the template format. Missing
 
 ## Regional Context
 
-Default to US university patterns for English syllabi, Chinese patterns for Chinese syllabi. Reference `../../references/syllabus_patterns.md` for detailed patterns.
+Adapt detection based on syllabus language and format, not assumed region. Reference `../../references/syllabus_patterns.md` for pattern examples. When the grading system or term structure is unfamiliar, extract it faithfully as presented.

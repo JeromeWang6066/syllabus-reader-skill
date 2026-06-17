@@ -42,4 +42,4 @@ See `assets/syllabus_summary_template.md` for format. Use `[未提及]` / `[Not 
 
 ## Regional Context
 
-Default to US patterns for English syllabi, Chinese patterns for Chinese syllabi. See `references/syllabus_patterns.md` for detailed patterns by region.
+Adapt detection based on syllabus language and format, not assumed region. See `references/syllabus_patterns.md` for pattern examples. When the grading system or term structure is unfamiliar, extract it faithfully as presented in the syllabus.

@@ -186,23 +186,22 @@ For missing information, mark as `[未提及]` (Chinese) or `[Not specified]` (E
 
 ### REGIONAL ADAPTATION
 
-**US syllabi (primary target):**
-- 15-week semesters + Finals Week
-- Canvas, Blackboard, Moodle, Brightspace
-- Honor Code, Disability Accommodations, Title IX
-- iClicker/Response devices common in large lectures
-- Online homework platforms (Pearson, McGraw-Hill, Wiley)
+Adapt detection strategies based on the syllabus language and format, not on assumed region.
 
-**Chinese syllabi (secondary target):**
-- 16-18 week semesters
-- 智慧树, 超星学习通, 雨课堂, 中国大学MOOC
-- 平时成绩 + 期末考试成绩 (typically 30-40% / 60-70% split)
-- 百分制 or 五级制 (优秀/良好/中等/及格/不及格)
-- 补考 and 重修 policies
-- 考勤 often weighted and taken seriously
-- 课程群 (WeChat) commonly mentioned
+**Detection principles:**
+- English syllabi → semester systems, letter grades, LMS references (Canvas, Blackboard, Moodle)
+- Chinese syllabi → 平时/期末 splits, 百分制/五级制, WeChat groups, 超星/智慧树
+- Other languages → infer structure from section headers and grading patterns directly
 
-For mixed/joint programs: identify which university's system governs policies.
+**Grading systems — detect and present faithfully:**
+- Letter grades (A-F), percentage scales, ECTS (A-E), numbered scales (0-20, 1-10, 4.0 GPA)
+- Extract weights directly — never assume a split like 30/70 or 40/60
+- If the grading system is unfamiliar, describe it as-is without guessing
+
+**Holiday and deadline awareness:**
+- Recognize named holidays in any language
+- Flag weeks before/after any break as potential high-stress
+- Note add/drop and withdrawal deadlines regardless of naming convention
 
 ---
 

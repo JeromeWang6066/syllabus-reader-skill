@@ -1,6 +1,6 @@
 ---
 name: syllabus-reader
-description: "This skill should be used when the user wants to interpret, parse, or summarize a university course syllabus. It handles uploaded files (PDF, DOCX) or URLs pointing to course syllabus pages. The skill extracts key information: basic course info, schedule, teaching content, grading breakdown, other important notes, and proactively flags hidden risks and pitfalls (attendance fail triggers, strict prerequisites, workload collision weeks, grade threshold traps, hidden costs, group work risks, and other easily overlooked policies). Outputs a clean structured summary with severity-ranked risk flags. Optimized for US university syllabi with full Chinese university support. Trigger keywords include: syllabus, 教学大纲, 课程大纲, course outline, 课程介绍, analyze this syllabus, 解读这份大纲, parse my syllabus, 帮我整理课程大纲, 课程安排, syllabus summary, 课程解析, what to watch out for, hidden requirements, potential pitfalls."
+description: "This skill should be used when the user wants to interpret, parse, or summarize a university course syllabus from any country or institution. It handles uploaded files (PDF, DOCX) or URLs pointing to course syllabus pages. The skill extracts key information: basic course info, schedule, teaching content, grading breakdown, other important notes, and proactively flags hidden risks and pitfalls (attendance fail triggers, strict prerequisites, workload collision weeks, grade threshold traps, hidden costs, group work risks, and other easily overlooked policies). Outputs a clean structured summary with severity-ranked risk flags. Compatible with syllabi worldwide across all major university systems, grading schemes, and term structures. Trigger keywords include: syllabus, 教学大纲, 课程大纲, course outline, 课程介绍, analyze this syllabus, 解读这份大纲, parse my syllabus, 帮我整理课程大纲, 课程安排, syllabus summary, 课程解析, what to watch out for, hidden requirements, potential pitfalls."
 agent_created: true
 ---
 
@@ -22,8 +22,8 @@ Extract and organize six core categories of information into a consistent, reada
 format. Beyond basic information, proactively scan for hidden risks and critical policies
 that students easily overlook — strict attendance triggers, prerequisite enforcement,
 workload collision periods, and grade thresholds that can unexpectedly fail a student.
-Optimized primarily for US university syllabi, with full support for Chinese university
-formats as a secondary target.
+Works with syllabi from universities worldwide, covering all major grading systems
+and term structures.
 
 ## When to Engage
 
@@ -188,7 +188,7 @@ Determine the input type:
 Read through the syllabus content systematically. Look for section headers and
 structural cues to identify the six information categories. Refer to
 `references/syllabus_patterns.md` for common section header patterns and
-risk indicator patterns across Chinese and US syllabi.
+risk indicator patterns across university systems worldwide.
 
 Key parsing strategies:
 - Look for numbered or bold section headers as category boundaries
@@ -257,41 +257,40 @@ When certain information is missing from the syllabus:
 3. Suggest where the user might find this information (e.g., "Check the department website"
    or "Usually announced in the first class")
 
-## Regional Adaptation: US (Primary) + China (Secondary)
+## Regional Adaptation
 
-This skill is optimized for US university syllabi as the primary target, with strong
-support for Chinese university syllabi as well.
+This skill works with syllabi from any university system worldwide. Adapt detection
+strategies based on the syllabus language and format, not on assumed region.
 
-### US Syllabus Specifics
-- Semesters typically 15 weeks + Finals Week
-- Common LMS platforms: Canvas, Blackboard, Moodle, Brightspace
-- Grade components: Homework, Midterm(s), Final Exam, Participation, Quizzes, Projects
-- Typical grading scale: A/A-/B+/B/B-/C+/C/C-/D/F; some schools use A/B/C/D/F only
-- Common policies: Honor Code, Disability Accommodations, Title IX statements
-- Add/Drop period: typically first 1-2 weeks
-- Withdrawal deadline: typically weeks 8-10 with "W" on transcript
-- Pass/Fail deadline: typically mid-semester
-- Key holidays: Labor Day, Thanksgiving Break, Spring Break, MLK Day
-- iClicker/Response devices common in large lectures
-- Online homework platforms (Pearson, McGraw-Hill, Wiley) common for STEM courses
+### Detection Principles
 
-### Chinese Syllabus Specifics
-- Semesters typically 16-18 weeks
-- Common LMS: 智慧树, 超星学习通, 雨课堂, 中国大学MOOC
-- Grade components: 平时成绩 (coursework) + 期末考试成绩 (final exam)
-- Typical split: 平时30-40% / 期末60-70%
-- Grading: 百分制 or 五级制 (优秀/良好/中等/及格/不及格)
-- 补考 (make-up exam) and 重修 (retake) policies common
-- 考勤 (attendance) often weighted and taken seriously
-- 课程群 (WeChat course group) commonly mentioned
-- 教学日历 arranged by 周次 (week number)
-- Key holidays: 国庆节, 中秋节, 五一劳动节, 清明节, 端午节
+**Language-based defaults:**
+- English-language syllabi → expect semester-based systems, letter grades, LMS references
+- Chinese-language syllabi → expect 平时/期末 splits, 百分制/五级制, WeChat groups
+- Other languages → infer structure from section headers and grading patterns directly
 
-### When Processing Mixed or Unclear Content
-- Default to US patterns as primary template for English-language syllabi
-- Default to Chinese patterns for Chinese-language syllabi
-- For joint programs with mixed language, identify which university's system governs
-  grading and policies, then apply that region's patterns
+**Context clues to identify the university system:**
+- Letter grades (A/B/C/D/F) → likely US, Canada, UK, Australia, or international schools
+- Percentage systems (百分制) or descriptive grades (优秀/良好) → likely China or East Asia
+- Numbered scales (1.0-4.0, 0-20, 1-10) → identify the specific scale and map accordingly
+- ECTS grades (A-E) → likely European
+- "Module" instead of "course" → likely UK/Ireland
+- "Subject" or "unit" → likely Australia/New Zealand
+
+**Term structure adaptation:**
+- Identify the total number of weeks from the schedule
+- Detect holidays and breaks from the context (named, dated, or week-gap patterns)
+- Adapt workload collision detection to the actual term length, not a fixed assumption
+
+**Grading adaptation:**
+- Extract grade component weights directly from the syllabus — never assume a split
+- Present the grading scale exactly as it appears in the syllabus
+- When the grading system is unfamiliar, describe it faithfully and note it as-is
+
+**Holiday and deadline awareness:**
+- Recognize named holidays in any language from the schedule
+- Flag weeks immediately before/after any break as potential high-stress periods
+- Note add/drop and withdrawal deadlines regardless of the naming convention used
 
 ## Output Language Rule
 
@@ -324,7 +323,7 @@ Works on any platform with Python 3 — generates an `.ics` file on disk.
 
 ### references/syllabus_patterns.md
 Comprehensive reference library of section header patterns, grading structures,
-terminology, and critical risk indicators for US and Chinese university syllabi.
+terminology, and critical risk indicators for university syllabi worldwide.
 Use this reference when:
 - Encountering an unfamiliar syllabus format or section naming convention
 - Having trouble identifying section boundaries
